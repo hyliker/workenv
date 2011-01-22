@@ -1,0 +1,139 @@
+set nu
+set wildmode=longest:list
+set et ts=4 sw=4 sts=4
+set smarttab
+set expandtab
+set shiftwidth=4
+set nocp
+syntax on
+set fileencodings=utf8,gbk	
+filetype plugin indent on 
+"set completeopt=longest,menu 
+set smarttab
+set autoindent
+"set smartindent
+set incsearch
+"set ignorecase smartcase
+set mouse=a
+
+nnoremap <F5> :set invpaste paste?<Enter>
+imap <F5> <C-O><F5>
+set pastetoggle=<F5>
+
+"Auto completion using the TAB key
+"This function determines, wether we are on
+"the start of the line text(then tab indents)
+"or if we want to try auto completion
+function! InsertTabWrapper()
+    let col=col('.')-1
+    if !col || getline('.')[col-1] !~ '\k'
+        return "\<TAB>"
+    else
+        return "\<C-N>"
+    endif
+endfunction
+
+"Remap the tab key to select action with InsertTabWrapper
+"inoremap <TAB> <C-R>=InsertTabWrapper()<CR>
+colorscheme delek 
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+au BufRead,BufNewFile *.js set ft=javascript.jquery
+
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"autocmd FileType python set omnifunc=pysmell#Complete
+
+autocmd FileType python set ft=python.django " For SnipMate
+autocmd FileType html set ft=html.django_template " For SnipMate
+
+"au BufNewFile,BufRead *.yaml,*.yml so ~/.vim/plugin/yaml.vim
+
+
+map <F7> <ESC>:NERDTreeToggle<CR>
+map nt <ESC>:NERDTreeToggle<CR>
+"map :t :tabe 
+
+"map <F8> <ESC>:NERDTreeClose<CR>
+"
+":inoremap ( ()<ESC>i
+":inoremap ) <c-r>=ClosePair(')')<CR>
+":inoremap { {}<ESC>i
+":inoremap } <c-r>=ClosePair('}')<CR>
+":inoremap [ []<ESC>i
+":inoremap ] <c-r>=ClosePair(']')<CR>
+":inoremap < <><ESC>i
+":inoremap > <c-r>=ClosePair('>')<CR>
+":inoremap " ""<ESC>i
+":inoremap ' ''<ESC>i
+
+"function ClosePair(char)
+"if getline('.')[col('.') - 1] == a:char
+"return "\<Right>"
+"else
+"return a:char
+"endif
+"endf
+"
+"
+"Set mapleader
+let mapleader = ";"
+let g:mapleader = ";"
+
+"I use Ctrl-n and Ctrl-p for next and previous tab.
+"Just add this to your<nobr> <wbr></nobr>.vimrc
+
+nnoremap <silent> <C-n> :tabnext<CR>
+nnoremap <silent> <C-p> :tabprevious<CR>
+
+"map <F8> <ESC>:set t_Co=256<CR>
+"map <F9> <ESC>:set t_Co=88<CR>
+
+map :co :VCSCommit 
+map <leader>vd :VCSVimDiff 
+map :log :VCSLog 
+map :st :VCSStatus
+map :up :VCSUpdate
+"comment code
+"map cc ,c<SPACE>
+
+map ;t :tabe 
+
+
+"map <leader>f :find<cr>
+"nmap <leader>w :wq!<cr>
+"nmap <leader>q :q!<cr>
+
+"Switch to current dir
+map <leader>cd :cd %:p:h<cr>
+
+set completeopt=menu
+
+"Set to auto read when a file is changed from the outside
+set autoread
+
+set wildmenu
+
+imap ;; <ESC>
+"imap <C-o> <ESC>
+"nmap <silent> <C-n> <Esc>:call ToggleHLSearch()<CR>
+"
+"set spell
+let g:ragtag_global_maps = 1
+au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+
+map <F12> :!jsl -process %<CR>
+
+function! JSLint()
+redir => message
+silent ! jsl -nologo -nofilelisting -nosummary -nocontext -conf /etc/jsl.conf$
+redir END
+tabnew
+silent put=message
+set nomodified
+endfunction
+command! -nargs=0 -complete=command JSLint call JSLint()
+
+"autocmd FileType python compiler pylint
+"au Filetype html,xml,xsl source ~/.vim/scripts/closetag.vim
